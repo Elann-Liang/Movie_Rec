@@ -23,19 +23,27 @@ func main() {
 	router.HandleFunc("/", homePage)
 	router.HandleFunc("/list", getMovieList).Methods("GET")
 	router.HandleFunc("/addMovie/{id}", postOneMovie).Methods("POST")
+	router.HandleFunc("/{id}", searchId).Methods("GET")
 
-	postSomethingToUrl("http://localhost:9200/movie/_doc")
-	//getSomethingFromUrl("http://localhost:9200/movie/_search")
+	//postSomethingToUrl("http://localhost:9200/movie/_doc")
+	getSomethingFromUrl("http://localhost:9200/movie/_search")
 	//log.Fatal(http.ListenAndServe(":8000", router))
+}
+
+func searchId(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Accessing Homepage")
 	w.Header().Set("Content-Type", "application/json")
+
 }
 
 func postSomethingToUrl(url string) {
-	movie := Movie{"movie1", 2, 1, []string{"Science Fiction", "Aldults"}}
+	movie := Movie{"Irondog", 2, 1, []string{"Science Fiction", "Aldults"}}
 	movieJson, err := json.Marshal(movie)
 	if err != nil {
 		panic(err)
@@ -58,7 +66,7 @@ func getSomethingFromUrl(url string) {
 	{
         "query": {
             "term": {
-                "Name": "Iron man"
+                "Name": "Irondog"
             }
         }
 	}
